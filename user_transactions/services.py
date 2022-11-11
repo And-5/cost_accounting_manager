@@ -1,5 +1,7 @@
 from .models import Balance, UserTransactions, Category
 from django.db import transaction
+from django.conf import settings
+from django.core.mail import send_mail
 
 
 def make_transaction(owner, sum, time, date, category, organization, description):
@@ -28,3 +30,14 @@ def make_transaction(owner, sum, time, date, category, organization, description
             category=cat
         )
     return True
+
+
+def send_email():
+    send_mail(
+        subject='Hi',
+        message='Hello',
+        from_email=settings.EMAIL_HOST_USER,
+        recipient_list=['123@mail.ru'],
+        # fail_silently=False,
+        # auth_user='TeamSupport',
+    )

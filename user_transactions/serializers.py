@@ -21,6 +21,7 @@ class CategoryUpdateSerializer(serializers.ModelSerializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
 
     class Meta:
         model = UserTransactions
