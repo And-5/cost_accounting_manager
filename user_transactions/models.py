@@ -19,9 +19,9 @@ class UserTransactions(models.Model):
     sum = models.FloatField()
     time = models.TimeField()
     date = models.DateField()
-    category = models.ForeignKey('Category', on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', related_name='category', on_delete=models.CASCADE)
     organization = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
+    description = models.CharField(max_length=255, blank=True)
 
 
 class Balance(models.Model):

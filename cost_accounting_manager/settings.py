@@ -11,11 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-import user_transactions.tasks
 from celery.schedules import crontab
 from decouple import config
 from pathlib import Path
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,8 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = False
+
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -42,11 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_transactions',
     'djoser',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'user_transactions',
 ]
 
 MIDDLEWARE = [
@@ -108,29 +106,20 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'test21@gmail.com'
-EMAIL_HOST_USER = 'andrey.chernushe21@gmail.com'
-# EMAIL_HOST_PASSWORD = 'test21'
-EMAIL_HOST_PASSWORD = 'huyqrlhlpxnqmulj'
+EMAIL_HOST_USER = 'test21@gmail.com'
+EMAIL_HOST_PASSWORD = 'test21'
+# EMAIL_HOST_USER = config('SMTP_EMAIL')
+# EMAIL_HOST_PASSWORD = config('SMTP_PASSWORD')
+
 
 # REDIS and CELERY related
-CELERY_REDIS_HOST = '0.0.0.0'
-CELERY_REDIS_PORT = '6379'
-CELERY_BROKER_URL = 'redis://' + CELERY_REDIS_HOST + ':' + CELERY_REDIS_PORT + '/0'
+CELERY_BROKER_URL = 'redis://redis:6379'
+CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
-CELERY_RESULT_BACKEND = 'redis://' + CELERY_REDIS_HOST + ':' + CELERY_REDIS_PORT + '/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERYD_TASK_TIME_LIMIT = 600
-
-CELERY_BEAT_SCHEDULE = {
-    "sample_task": {
-        "task": "core.tasks.send_statistics_email",
-        # "schedule": crontab(minute="*/1"),
-        # "schedule": crontab(hour=7, minute=30, day_of_week=6),
-    },
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -1,0 +1,9 @@
+1. select notebooks_brand.title, count(notebooks_notebook.brand_id)
+from notebooks_notebook left join notebooks_brand on brand_id = notebooks_brand.id
+group by notebooks_brand.title
+order by 2 desc
+
+2. select round(width*2)/2 as width, round(depth*2)/2 as depth, count(round(depth*2)/2)
+from notebooks_notebook
+group by 1, 2
+order by  2 , 1

@@ -1,7 +1,9 @@
+from django.core.mail import send_mail
+
 from .models import Balance, UserTransactions, Category
 from django.db import transaction
+
 from django.conf import settings
-from django.core.mail import send_mail
 
 
 def make_transaction(owner, sum, time, date, category, organization, description):
@@ -32,12 +34,12 @@ def make_transaction(owner, sum, time, date, category, organization, description
     return True
 
 
-def send_email():
+def send_email(statistic, sum, owner_email, yesterday_date, user_name):
     send_mail(
         subject='Hi',
-        message='Hello',
+        message=f'Добрый день, {user_name}! '
+                f'Вы {yesterday_date} добивили {statistic} записи на сумму {sum}.',
         from_email=settings.EMAIL_HOST_USER,
-        recipient_list=['123@mail.ru'],
-        # fail_silently=False,
-        # auth_user='TeamSupport',
+        recipient_list=owner_email,
+        fail_silently=False,
     )
